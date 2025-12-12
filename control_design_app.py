@@ -74,6 +74,27 @@ else:  # Avance de phase (Lead)
     # Lead compensator: C(s) = K * (1 + T*s) / (1 + alpha*T*s)
     C = ct.TransferFunction([K*T, K], [alpha*T, 1])
 
+# Frequency range parameters
+st.sidebar.header("Frequency Range")
+omega_min = st.sidebar.number_input(
+    "ω min (rad/s)",
+    min_value=0.001,
+    value=0.01,
+    step=0.001,
+    format="%.3f",
+    help="Minimum frequency for frequency response plots"
+)
+omega_max = st.sidebar.number_input(
+    "ω max (rad/s)",
+    min_value=0.01,
+    value=100.0,
+    step=1.0,
+    help="Maximum frequency for frequency response plots"
+)
+
+# Generate frequency vector
+w = np.logspace(np.log10(omega_min), np.log10(omega_max), 500)
+
 # Calculate open-loop and closed-loop systems
 L = C * G  # Open-loop transfer function
 try:
@@ -88,16 +109,16 @@ tab1, tab2, tab3 = st.tabs(["Nichols Plot (Open-Loop)", "Bode Plot (Closed-Loop)
 # Tab 1: Black-Nichols plot (open-loop)
 with tab1:
     try:
-        fig1 = nichols(L)
-        st.plotly_chart(fig1, width="stretch", height=600)
+        fig1 = nichols(L, w=w)
+        st.plotly_chart(fig1, width="stretch", height=600, theme=None)
     except Exception as e:
         st.error(f"Error generating Nichols plot: {str(e)}")
 
 # Tab 2: Bode plot (closed-loop)
 with tab2:
     try:
-        fig2 = bode(T_cl)
-        st.plotly_chart(fig2, width="stretch", height=600)
+        fig2 = bode(T_cl, w=w)
+        st.plotly_chart(fig2, width="stretch", height=600, theme=None)
     except Exception as e:
         st.error(f"Error generating Bode plot: {str(e)}")
 
@@ -105,7 +126,7 @@ with tab2:
 with tab3:
     try:
         fig3 = step(T_cl)
-        st.plotly_chart(fig3, width="stretch", height=600)
+        st.plotly_chart(fig3, width="stretch", height=600, theme=None)
     except Exception as e:
         st.error(f"Error generating step response: {str(e)}")
 

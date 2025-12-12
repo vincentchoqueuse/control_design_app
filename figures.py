@@ -135,7 +135,8 @@ class Figure():
         layout =  {
             "xaxis": xaxis,
             "yaxis": yaxis,
-            "autosize": True
+            "autosize": True,
+            "template": "plotly"
         }
         return layout
 
@@ -320,6 +321,8 @@ class Bode_Figure(Figure):
         fig.update_xaxes(title_text=self.get_x_title(), type=x_type, row=1, col=1)
         fig.update_yaxes(title_text=self.get_y2_title(), row=2, col=1)
         fig.update_xaxes(title_text=self.get_x_title(), type=x_type, row=2, col=1)
+
+        fig.update_layout(template="plotly")
 
         return fig
 
