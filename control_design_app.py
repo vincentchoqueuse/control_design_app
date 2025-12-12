@@ -58,19 +58,19 @@ controller_type = st.sidebar.selectbox(
 
 # Controller parameters based on type
 if controller_type == "P":
-    Kp = st.sidebar.number_input("Kp (Proportional Gain)", min_value=0.0, value=1.0, step=0.1)
+    Kp = st.sidebar.number_input("Kp (Proportional Gain)", min_value=0.0, value=1.0, step=0.001, format="%.3f")
     C = ct.TransferFunction([Kp], [1])
 
 elif controller_type == "PI":
-    Kp = st.sidebar.number_input("Kp (Proportional Gain)", min_value=0.0, value=1.0, step=0.1)
-    Ki = st.sidebar.number_input("Ki (Integral Gain)", min_value=0.0, value=1.0, step=0.1)
+    Kp = st.sidebar.number_input("Kp (Proportional Gain)", min_value=0.0, value=1.0, step=0.001, format="%.3f")
+    Ki = st.sidebar.number_input("Ki (Integral Gain)", min_value=0.0, value=1.0, step=0.001, format="%.3f")
     C = ct.TransferFunction([Kp, Ki], [1, 0])
 
 else:  # Avance de phase (Lead)
-    K = st.sidebar.number_input("K (Gain)", min_value=0.0, value=1.0, step=0.1)
-    alpha = st.sidebar.number_input("α (alpha)", min_value=0.001, max_value=0.99, value=0.5, step=0.001,
+    K = st.sidebar.number_input("K (Gain)", min_value=0.0, value=1.0, step=0.001, format="%.3f")
+    alpha = st.sidebar.number_input("α (alpha)", min_value=0.001, max_value=0.99, value=0.5, step=0.001, format="%.3f",
                                     help="alpha < 1 for lead compensator")
-    T = st.sidebar.number_input("T (time constant)", min_value=0.0, value=1.0, step=0.01)
+    T = st.sidebar.number_input("T (time constant)", min_value=0.0, value=1.0, step=0.001, format="%.3f")
     # Lead compensator: C(s) = K * (1 + T*s) / (1 + alpha*T*s)
     C = ct.TransferFunction([K*T, K], [alpha*T, 1])
 
