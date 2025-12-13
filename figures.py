@@ -264,7 +264,7 @@ class Bode_Figure(Figure):
 
     def add_plot(self,tf,w=None,label="sys"):
         mag_list, phase_list, w = ctl.frequency_response(tf, omega=w)
-
+        phase_list = np.unwrap(phase_list)
         units = ["","rad/s","rad"]
 
         if self.dB:
@@ -387,6 +387,7 @@ class Nichols_Figure(Figure):
     def add_plot(self,tf,w=None,label="sys"):
 
         mag_list, phase_list, w = ctl.frequency_response(tf, omega=w)
+        phase_list = np.unwrap(phase_list)
         mag_list = 20*np.log10(mag_list)
         phase_list = phase_list*180/(np.pi)
 
